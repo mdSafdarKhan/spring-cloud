@@ -1,2 +1,5 @@
 server:
   port: 8888
+  
+ prop1: Hello World!
+ prop2: You are Awesome!
