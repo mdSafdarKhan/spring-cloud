@@ -1,0 +1,173 @@
+What Is a Microservice Architecture?
+	Microservice architecture (MSA) is an approach to building software systems that decomposes business domain models into smaller, consistent, bounded-contexts Implemented by services.
+	These services are isolated and autonomous yet communicate to provide some piece of business functionality.
+	Microservices are typically implemented and operated by small teams with enough autonomy that each team and service can change its internal implementation details (including replacing it outright!) with minimal impact across the rest of the system.
+	
+Microservices ?
+	Microservices are an architecture style used by many organizations today as a game changer to achieve a high degree of agility, speed of delivery, and scale.
+	Microservices give us a way to develop more physically separated modular applications.
+	Microservices are an architectural style or an approach to building IT systems as a set of business capabilities that are autonomous, self-contained, and loosely coupled.
+	An excellent definition of microservices is that of Fowler and Lewis, as an architectural style that
+	
+			"… is an approach to developing a single application as a suite of small services, each running in its own process and communicating with lightweight mechanisms, often an HTTP resource API. These services are built around business capabilities and independently deployable by fully automated deployment machinery. There is a bare minimum of centralized management of these services, which may be written in different programming languages and use different data storage technologies."
+			
+Principles of microservices
+	Single responsibility per service
+	Microservices are autonomous
+		Microservices are self-contained, independently deployable, and autonomous
+		services that take full responsibility of a business capability and its execution.
+		
+Characteristics of a Microservice Architecture
+	Componentization via Services - independently replaceable , independently upgradable ( libraries , services)
+	Organized around Business Capabilities
+	Products not Projects
+	Smart endpoints and dumb pipes
+	Decentralized Governance
+	Decentralized Data Management
+	Infrastructure Automation
+	Design for failure
+	Evolutionary Design
+			https://martinfowler.com/articles/microservices.html
+			
+Why Use Microservices?
+	Advantages as Seen by Industry Experts:
+			Martin Fowler’s “Microservice Trade-Offs” article9 distils his view of the advantages down to three points:
+				Strong Module Boundaries
+				Independent Deployment
+				Technology diversity
+	Our Reasons to Adopt a Microservices Architecture
+		Easier to maintain, as they are easier to read, reason about, and to independently maintain, upgrade, and evolve
+		Services implement a self-contained, well-defined and documented set of functionalities, which they expose only via versioned APIs.
+		They can more easily be designed to be a true system of record for all data they access from a data store (such as an underlying database)
+		Forced Separation of Concerns
+		Natural Team Ownership
+		Frequent Deployments
+		
+Microservices adopters (Companies)
+	Netflix (www.netflix.com)
+	Uber (www.uber.com)
+	Airbnb (www.airbnb.com)
+	Orbitz (www.orbitz.com)
+	eBay (www.ebay.com)
+	Amazon (www.amazon.com)
+	Gilt (www.gilt.com)
+	
+Microservices Technology Solutions	
+	Switching from SOAP to REST doesn’t make a microservices architecture.
+	Java frameworks for working with microservices:
+			Spring Boot
+			 Dropwizard,
+			WildFly Swarm
+	There are a couple that take a reactive approach to microservices like Vert.x and Lagom.
+	
+Preparing Your Environment
+	We will be using Java 1.8 for all examples and building them with Maven
+			JDK 1.8
+			Maven 3.2+
+			Eclipse based IDE: Spring Tool Suite
+	Location : \\jupiter\Training Material\Lateral Training 2017\Tecnical Training\microservices
+			 Extract the spring-tool-suite-3.9.0.RELEASE-e4.7.0-win32 at c:\
+			 Copy repository folder to C:\users\instructor\.m2
+			
+Using spring boot to develop microservices
+	Spring Boot is Spring's convention-over-configuration solution for creating stand-alone, production-grade Spring-based Applications that you can "just run".[22] It takes an opinionated view[jargon] of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need very little Spring configuration. Features:
+		Create stand-alone Spring applications
+		Embed Tomcat or Jetty directly (no need to deploy WAR files)
+		Provide opinionated 'starter' Project Object Models (POMs) to simplify your Maven configuration
+		Automatically configure Spring whenever possible
+		Provide production-ready features such as metrics, health checks and externalized configuration
+		Absolutely no code generation and no requirement for XML configuration
+		
+Spring Boot Application - Annotations
+	The @SpringBootApplication annotation is a top-level annotation that encapsulates three other annotations, as shown in the following code snippet:
+			@Configuration
+			@EnableAutoConfiguration
+			@ComponentScan
+
+The Spring Boot configuration
+	Spring Boot uses convention over configuration by scanning the dependent libraries available in the class path. For each spring-boot-starter-* dependency in the POM file, Spring Boot executes a default AutoConfiguration class.
+	Overriding default configuration : application.properties
+			Server.port=9090
+	Changing the default embedded web server:
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<exclusions>
+					<exclusion>
+					<groupId>org.springframework.boot</groupId> 
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency> 
+			<dependency>
+				<groupId>org.springframework.boot</groupId> 
+				<artifactId>spring-boot-starter-undertow</artifactId>
+				</dependency> 
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+			</dependency>
+			
+Implementing Spring Boot security
+	Securing microservices with basic security
+		Adding basic authentication to Spring Boot is pretty simple. Add the following dependency to pom.xml. This will include the necessary Spring security library files.
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-security</artifactId>
+			</dependency>
+			
+		Enable method-level security
+			@EnableGlobalMethodSecurity
+			@SpringBootApplication
+			public class SecirtyDemoApplication
+		
+		Add username and password to application.properties, as shown here:
+			security.user.name=Rijuvan
+			security.user.password=Rijuvan123
+			
+Enabling cross-origin access for microservices
+	In microservices, as each service runs with its own origin, it will easily get into the issue of a client-side web application consuming data from multiple origins.
+	For instance, a scenario where a browser client accessing Customer from the Customer microservice and Order History from the Order microservices is very common in the microservices world
+		@RestController
+		public class SecurController {
+			@CrossOrigin
+			@RequestMapping("/data")
+			public SecureModel showData()
+		}
+		
+Creating Spring microservice
+	The Customer Profile microservice exposes methods to create, read, update, and delete (CRUD) a customer and a registration service to register a customer.
+	The registration process applies certain business logic, save the customer profile.
+			CustomerController in the diagram is the REST endpoint, which invokes a component class, CustomerComponent. The component class/bean handles all the business logic. CustomerRepository is a Spring data JPA repository defined to handle the persistence of the Customer entity.
+			
+Spring Boot actuators
+	Spring Boot actuators provide an excellent out-of-the-box mechanism to monitor and manage Spring Boot applications in production.
+			Create another Spring Starter Project
+			This time, select Web and Actuators under Ops.
+			Point the browser to localhost:8080/actuator. This will open the HAL browser.
+			management.security.enabled=false ( update /add in application.properties )
+			
+	Monitoring using Jconsole:
+		Start jconsole and browse under mbean
+		
+Documenting microservices
+	microservices can be documented using the popular Swagger framework.
+	The following example will use Springfox libraries to generate REST API documentation.
+	Springfox is a set of Java- and Spring-friendly libraries. Enable below configuration in pom.xml
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		
+	@EnableSwagger2 annotation, as follows:
+			@EnableSwagger2
+			@SpringBootApplication
+			public class Application {
+	
+	Go to : http://localhost:8080/swagger-ui.html
